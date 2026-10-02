@@ -1,5 +1,11 @@
 ---
 import Icon from './Icon.astro';
+import { withBase } from '../../lib/paths';
+
+const samples = [
+  { label: 'sample CSV', href: withBase('samples/sales.csv') },
+  { label: 'sample XLSX', href: withBase('samples/sales.xlsx') },
+];
 ---
 
 <div class="dropzone" data-dropzone>
@@ -17,4 +23,17 @@ import Icon from './Icon.astro';
       data-busy-lock
     />
   </label>
+  <p class="mt-5 text-sm text-muted">
+    No file at hand? Try the
+    {
+      samples.map((sample, index) => (
+        <>
+          {index > 0 && ' or the '}
+          <button type="button" class="link" data-sample={sample.href} data-busy-lock>
+            {sample.label}
+          </button>
+        </>
+      ))
+    }
+  </p>
 </div>
