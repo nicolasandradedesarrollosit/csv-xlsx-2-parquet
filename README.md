@@ -61,22 +61,19 @@ Two sample files live in `public/samples/` and can be loaded from the dropzone: 
 (semicolon separated) and `sales.xlsx` (three sheets, one of them empty). Both include
 `dd/mm/yyyy` dates, comma decimals, zero-padded codes and empty cells.
 
-## Deploying to GitHub Pages
+## Deploying to Vercel
 
-The workflow in `.github/workflows/deploy.yml` type-checks, builds and publishes the site on
-every push to `main`.
+The site is a static build, so Vercel needs no adapter: import the repository, keep the detected
+Astro preset (`npm run build`, output `dist/`) and every push to `main` is deployed.
 
-1. Push the repository to GitHub.
-2. In **Settings → Pages**, set **Source** to **GitHub Actions**.
-3. Push to `main`, or run the workflow by hand from the **Actions** tab.
+Canonical URLs, the sitemap and the social tags need the public address of the site. It is taken,
+in this order, from:
 
-The site URL and the base path (`/<repository>/` for a project site) come from the Pages
-configuration, so nothing has to be edited. To reproduce that build locally:
+1. `SITE_URL`, if set as an environment variable in the Vercel project (use it for a custom domain);
+2. `VERCEL_PROJECT_PRODUCTION_URL`, which Vercel provides on every build.
 
-```sh
-SITE_URL=https://<user>.github.io BASE_PATH=/<repository> npm run build
-SITE_URL=https://<user>.github.io BASE_PATH=/<repository> npm run preview
-```
+`vercel.json` adds long-lived caching for the hashed files under `_astro/` and basic security
+headers.
 
 ## SEO
 
@@ -95,13 +92,10 @@ To get the site into Google:
 1. Add the site as a URL-prefix property in [Google Search Console](https://search.google.com/search-console).
 2. Choose the HTML tag verification method and paste the token into `googleSiteVerification`
    in `src/config/site.ts`, then deploy.
-3. Submit `https://<user>.github.io/<repository>/sitemap-index.xml` under **Sitemaps** and
-   request indexing of the home page with **URL inspection**.
+3. Submit `https://<your-domain>/sitemap-index.xml` under **Sitemaps** and request indexing of
+   the home page with **URL inspection**.
 
-On a GitHub Pages project site, `robots.txt` is served under `/<repository>/`, where crawlers
-do not look for it; only a `robots.txt` at the root of the domain counts. That is harmless here
-(everything is allowed), but it means the sitemap has to be submitted by hand. With a custom
-domain, or a `<user>.github.io` repository, it is picked up automatically.
+`robots.txt` is served at the root of the domain and points to the sitemap.
 
 ## Project structure
 

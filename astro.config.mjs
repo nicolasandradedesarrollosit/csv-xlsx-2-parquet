@@ -5,8 +5,10 @@ import { defineConfig, fontProviders } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 import tailwindcss from '@tailwindcss/vite';
 
+const vercelUrl = env.VERCEL_PROJECT_PRODUCTION_URL && `https://${env.VERCEL_PROJECT_PRODUCTION_URL}`;
+
 export default defineConfig({
-  site: env.SITE_URL ?? 'http://localhost:4321',
+  site: env.SITE_URL ?? vercelUrl ?? 'http://localhost:4321',
   base: env.BASE_PATH ?? '/',
   trailingSlash: 'always',
   output: 'static',
