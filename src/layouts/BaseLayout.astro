@@ -6,6 +6,7 @@ import JsonLd from '../components/seo/JsonLd.astro';
 import SEO, { type SeoProps } from '../components/seo/SEO.astro';
 import Header from '../components/layout/Header.astro';
 import Footer from '../components/layout/Footer.astro';
+import PageLoader from '../components/layout/PageLoader.astro';
 import { withBase } from '../lib/paths';
 
 interface Props {
@@ -30,11 +31,35 @@ const { seo, jsonLd = [] } = Astro.props;
         if (theme !== 'light' && theme !== 'dark') {
           theme = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
         }
-        document.documentElement.dataset.theme = theme;
+        var root = document.documentElement;
+        root.dataset.theme = theme;
+
+        function done() {
+          delete root.dataset.loading;
+        }
+        root.dataset.loading = '';
+        document.addEventListener('DOMContentLoaded', function () {
+          if (!document.fonts) return done();
+          document.fonts.ready.then(done, done);
+        });
+        setTimeout(done, 3000);
       })();
     </script>
-    <Font cssVariable="--font-geist" preload={[{ weight: 400, style: 'normal', subset: 'latin' }]} />
-    <Font cssVariable="--font-geist-mono" />
+    <Font
+      cssVariable="--font-geist"
+      preload={[
+        { weight: 400, style: 'normal', subset: 'latin' },
+        { weight: 500, style: 'normal', subset: 'latin' },
+        { weight: 600, style: 'normal', subset: 'latin' },
+      ]}
+    />
+    <Font
+      cssVariable="--font-geist-mono"
+      preload={[
+        { weight: 400, style: 'normal', subset: 'latin' },
+        { weight: 500, style: 'normal', subset: 'latin' },
+      ]}
+    />
     <SEO {...seo} />
     <link rel="icon" href={withBase('favicon.svg')} type="image/svg+xml" />
     {jsonLd.map((data) => <JsonLd data={data} />)}
@@ -48,6 +73,7 @@ const { seo, jsonLd = [] } = Astro.props;
       <slot />
     </main>
     <Footer />
+    <PageLoader />
     <script>
       import '../lib/client';
     </script>

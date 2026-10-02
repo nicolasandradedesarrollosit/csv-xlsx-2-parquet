@@ -124,12 +124,20 @@ the sheets with their row counts and, on request, turns one sheet into CSV:
 
 Tailwind CSS v4, configured in `src/styles/index.css`: raw colours are CSS variables on `:root`,
 redefined for the dark theme and exposed with `@theme inline` (`bg-bg`, `text-muted`,
-`border-line`, `text-accent`, `text-danger`…). Shared classes (`.wrap`, `.card`, `.btn`, `.chip`,
-`.select`, `.dropzone`, `.data-table`, `.alert`) live in the components layer; one-off layout stays
-in utility classes.
+`border-line`, `text-accent`, `text-danger`…). Shared classes (`.wrap`, `.card`, `.btn`,
+`.select`, `.dropzone`, `.data-table`, `.alert`, `.loader`) live in the components layer; one-off
+layout stays in utility classes.
 
 The theme is the `data-theme` attribute on `<html>`, set before first paint by an inline script
-(stored choice, else the system preference).
+(stored choice, else the system preference). Scrollbars are coloured with the same tokens
+(`scrollbar-color`, with a `::-webkit-scrollbar` fallback), so they follow the theme.
+
+The same inline script sets `data-loading` on `<html>`, which shows the full-page loader
+(`components/layout/PageLoader.astro`). It is removed once `document.fonts.ready` resolves after
+`DOMContentLoaded`, or after three seconds at the latest, so the page appears with Geist already
+applied. The Geist (400, 500, 600) and Geist Mono (400, 500) latin files used above the fold are
+preloaded from the site. Without JavaScript the attribute is never set and the page renders
+directly.
 
 ## SEO
 

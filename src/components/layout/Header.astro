@@ -14,6 +14,16 @@ import { withBase } from '../../lib/paths';
     </a>
 
     <div class="flex items-center gap-1">
+      <a
+        class="btn btn--ghost btn--sm mr-1"
+        href={SITE.repo}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label={`Star ${SITE.name} on GitHub`}
+      >
+        <Icon name="star" />
+        Star
+      </a>
       <a class="icon-btn" href={SITE.authorUrl} target="_blank" rel="noopener noreferrer" aria-label="Nicolás Andrade on GitHub">
         <Icon name="github" class="size-[1.05rem]" />
       </a>
