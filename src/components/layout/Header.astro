@@ -1,0 +1,23 @@
+---
+import ThemeToggle from './ThemeToggle.astro';
+import Icon from '../ui/Icon.astro';
+import Logo from '../ui/Logo.astro';
+import { SITE } from '../../config/site';
+import { withBase } from '../../lib/paths';
+---
+
+<header class="sticky top-0 z-30 border-b border-line bg-bg/80 backdrop-blur">
+  <div class="wrap flex h-14 items-center justify-between gap-4">
+    <a href={withBase('/')} class="flex items-center gap-2.5 text-fg no-underline" aria-label={SITE.name}>
+      <Logo />
+      <span class="text-sm font-medium">{SITE.name}</span>
+    </a>
+
+    <div class="flex items-center gap-1">
+      <a class="icon-btn" href={SITE.repo} target="_blank" rel="noopener noreferrer" aria-label="Source code on GitHub">
+        <Icon name="github" class="size-[1.05rem]" />
+      </a>
+      <ThemeToggle label="Toggle theme" />
+    </div>
+  </div>
+</header>

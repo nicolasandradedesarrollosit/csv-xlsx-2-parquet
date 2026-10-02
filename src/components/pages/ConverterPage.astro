@@ -1,0 +1,9 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Hero from '../ui/Hero.astro';
+import { SITE } from '../../config/site';
+---
+
+<BaseLayout seo={{ title: SITE.title, description: SITE.description }}>
+  <Hero />
+</BaseLayout>

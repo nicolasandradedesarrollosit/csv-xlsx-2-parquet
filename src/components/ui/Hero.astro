@@ -1,0 +1,19 @@
+---
+import Icon from './Icon.astro';
+---
+
+<section class="wrap pt-16 sm:pt-24" aria-labelledby="hero-title">
+  <p class="kicker">/ csv · xlsx → parquet</p>
+  <h1 id="hero-title" class="mt-4 max-w-3xl text-display leading-[1.02] font-semibold tracking-tighter">
+    Spreadsheets to Parquet, without leaving your browser.
+  </h1>
+  <p class="mt-6 max-w-2xl text-lg text-muted">
+    Drop a CSV or Excel file, check the preview, fix the column types and download a compact Parquet file. Nothing is
+    uploaded: the conversion runs on your machine.
+  </p>
+  <ul role="list" class="mt-6 flex flex-wrap gap-2">
+    <li class="chip"><Icon name="shield" />No upload, no server</li>
+    <li class="chip">DuckDB-WASM</li>
+    <li class="chip">ZSTD compression</li>
+  </ul>
+</section>

@@ -1,0 +1,13 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { withBase } from '../lib/paths';
+---
+
+<BaseLayout seo={{ title: 'Page not found', description: 'This page does not exist.', noindex: true }}>
+  <section class="wrap py-28">
+    <p class="kicker">404</p>
+    <h1 class="mt-5 text-display leading-none font-semibold tracking-tighter">Page not found</h1>
+    <p class="mt-6 text-lg text-muted">This page does not exist.</p>
+    <a class="btn mt-8" href={withBase('/')}>Back to the converter</a>
+  </section>
+</BaseLayout>

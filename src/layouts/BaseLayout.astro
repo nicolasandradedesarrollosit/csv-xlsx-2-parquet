@@ -1,0 +1,52 @@
+---
+import { Font } from 'astro:assets';
+import '../styles/index.css';
+
+import SEO, { type SeoProps } from '../components/seo/SEO.astro';
+import Header from '../components/layout/Header.astro';
+import Footer from '../components/layout/Footer.astro';
+import { withBase } from '../lib/paths';
+
+interface Props {
+  seo: SeoProps;
+}
+
+const { seo } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script is:inline>
+      (function () {
+        var theme;
+        try {
+          theme = localStorage.getItem('theme');
+        } catch (e) {}
+        if (theme !== 'light' && theme !== 'dark') {
+          theme = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        }
+        document.documentElement.dataset.theme = theme;
+      })();
+    </script>
+    <Font cssVariable="--font-geist" preload={[{ weight: 400, style: 'normal', subset: 'latin' }]} />
+    <Font cssVariable="--font-geist-mono" />
+    <SEO {...seo} />
+    <link rel="icon" href={withBase('favicon.svg')} type="image/svg+xml" />
+    <meta name="theme-color" content="#fafaf9" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0c0c0e" media="(prefers-color-scheme: dark)" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <Header />
+    <main id="main">
+      <slot />
+    </main>
+    <Footer />
+    <script>
+      import '../lib/client';
+    </script>
+  </body>
+</html>
