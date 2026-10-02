@@ -6,6 +6,8 @@ backend: the conversion runs in your browser with DuckDB-WASM.
 
 ![A CSV row is dropped, becomes a typed table and is written as a Parquet file](docs/demo.gif)
 
+The same clip in 1080p: [docs/demo.mp4](docs/demo.mp4).
+
 ## Features
 
 - Drag and drop or pick a `.csv` or `.xlsx` file; workbooks with several sheets get a sheet picker.
