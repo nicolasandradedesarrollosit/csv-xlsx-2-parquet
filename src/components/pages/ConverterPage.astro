@@ -3,7 +3,6 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import Alert from '../ui/Alert.astro';
 import Dropzone from '../ui/Dropzone.astro';
 import ExportBar from '../ui/ExportBar.astro';
-import Faq from '../ui/Faq.astro';
 import FileBar from '../ui/FileBar.astro';
 import Hero from '../ui/Hero.astro';
 import HowItWorks from '../ui/HowItWorks.astro';
@@ -12,12 +11,12 @@ import SchemaTable from '../ui/SchemaTable.astro';
 import Stats from '../ui/Stats.astro';
 import Status from '../ui/Status.astro';
 import { SITE } from '../../config/site';
-import { faqPage, webApplication } from '../../lib/seo';
+import { webApplication } from '../../lib/seo';
 ---
 
 <BaseLayout
   seo={{ title: SITE.title, description: SITE.description }}
-  jsonLd={[webApplication(Astro.site), faqPage()]}
+  jsonLd={[webApplication(Astro.site)]}
 >
   <Hero />
   <section class="wrap mt-10" aria-label="Converter" data-converter>
@@ -35,5 +34,4 @@ import { faqPage, webApplication } from '../../lib/seo';
     </div>
   </section>
   <HowItWorks />
-  <Faq />
 </BaseLayout>

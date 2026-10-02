@@ -1,5 +1,4 @@
 import { SITE } from '../config/site';
-import { FAQ } from '../data/faq';
 import { withBase } from './paths';
 
 export function absUrl(path: string, site: URL | undefined) {
@@ -29,17 +28,5 @@ export function webApplication(site: URL | undefined) {
       'Runs in the browser, no upload',
     ],
     author: { '@type': 'Person', name: SITE.author, url: SITE.authorUrl },
-  };
-}
-
-export function faqPage() {
-  return {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: FAQ.map((item) => ({
-      '@type': 'Question',
-      name: item.question,
-      acceptedAnswer: { '@type': 'Answer', text: item.answer },
-    })),
   };
 }

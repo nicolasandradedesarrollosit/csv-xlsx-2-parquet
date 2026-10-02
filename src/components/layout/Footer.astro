@@ -7,11 +7,6 @@ const year = new Date().getFullYear();
 <footer class="section border-t border-line">
   <div class="wrap flex flex-wrap items-center justify-between gap-x-6 gap-y-3 py-6 text-xs text-muted">
     <p class="font-mono">© {year} {SITE.author}</p>
-    <p>
-      Built with Astro and DuckDB-WASM.
-      <a class="text-fg no-underline hover:text-accent" href={SITE.repo} target="_blank" rel="noopener noreferrer">
-        Source code
-      </a>
-    </p>
+    <a class="no-underline hover:text-fg" href={SITE.repo} target="_blank" rel="noopener noreferrer">Source code</a>
   </div>
 </footer>

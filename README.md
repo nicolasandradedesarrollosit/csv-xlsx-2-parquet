@@ -81,11 +81,11 @@ The page is static HTML, so its content is indexable without running JavaScript.
 
 - a descriptive title, meta description, canonical URL and `robots` meta tag;
 - Open Graph and Twitter tags with a 1200×630 preview image (`public/og-default.png`);
-- JSON-LD structured data: `WebApplication` and `FAQPage`, built from the visible FAQ;
+- JSON-LD structured data (`WebApplication`);
 - `sitemap-index.xml` (`@astrojs/sitemap`) and `robots.txt`, both using the deployed URL.
 
-Titles, description and keywords live in `src/config/site.ts`; the steps and the FAQ in
-`src/data/faq.ts`.
+Titles, description and keywords live in `src/config/site.ts`; the how-it-works steps in
+`src/data/steps.ts`.
 
 To get the site into Google:
 
@@ -104,13 +104,13 @@ public/samples/         Sample CSV and XLSX files
 scripts/make-samples.mjs  Generates the samples
 src/
   config/site.ts        Name, titles, description, keywords, repository, preview size
-  data/faq.ts           Steps and FAQ shown on the page and in the structured data
+  data/steps.ts         The how-it-works steps shown on the page
   layouts/BaseLayout.astro
   components/
     layout/             Header, footer, theme toggle
     pages/              One component per page; route files render these
     seo/                Meta tags and JSON-LD
-    ui/                 Dropzone, file bar, stats, schema and preview tables, alert, FAQ
+    ui/                 Dropzone, file bar, stats, schema and preview tables, alert
   lib/
     client.ts           Single client entry point
     seo.ts              Absolute URLs and JSON-LD builders

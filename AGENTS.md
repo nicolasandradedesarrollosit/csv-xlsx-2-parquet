@@ -23,8 +23,8 @@ See `README.md` for an overview and `docs/ARCHITECTURE.md` for how the pieces fi
 
 ### Content and SEO
 
-- Site name, titles, description and keywords → `src/config/site.ts`. Steps and FAQ → `src/data/faq.ts`.
-- The FAQ feeds both the page and the `FAQPage` JSON-LD: never add structured data for content that is not visible.
+- Site name, titles, description and keywords → `src/config/site.ts`. How-it-works steps → `src/data/steps.ts`.
+- Never add structured data for content that is not visible on the page.
 - Absolute URLs go through `absUrl()` in `src/lib/seo.ts`.
 
 ### Privacy

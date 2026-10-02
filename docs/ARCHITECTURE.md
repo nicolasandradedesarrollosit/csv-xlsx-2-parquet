@@ -135,9 +135,8 @@ The theme is the `data-theme` attribute on `<html>`, set before first paint by a
 
 `components/seo/SEO.astro` emits the title, description, canonical URL, `robots`, Open Graph and
 Twitter tags, plus the Google verification tag when `SITE.googleSiteVerification` is set.
-`lib/seo.ts` builds absolute URLs (`absUrl()`, which honours the base path) and the JSON-LD
-objects: `WebApplication` for the tool and `FAQPage` from `data/faq.ts`. The same FAQ entries are
-rendered on the page by `Faq.astro`, so the structured data always matches visible content.
+`lib/seo.ts` builds absolute URLs (`absUrl()`, which honours the base path) and the
+`WebApplication` JSON-LD object.
 `@astrojs/sitemap` writes the sitemap and `pages/robots.txt.ts` points to it. The 404 page is
 `noindex` and left out of the sitemap.
 
