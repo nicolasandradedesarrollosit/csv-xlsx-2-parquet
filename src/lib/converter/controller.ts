@@ -1,11 +1,14 @@
 import { ConverterError } from '../errors';
 import { getEngine } from '../duckdb/client';
+import { findIssue, inferTypes } from '../duckdb/infer';
 import { INPUT_FILE, ingest } from '../duckdb/ingest';
 import { previewRows } from '../duckdb/preview';
+import { COLUMN_TYPES, type ColumnType } from '../duckdb/sql';
 import { closeWorkbook, openWorkbook, sheetToCsv } from '../xlsx/client';
 import {
   clearAlert,
   renderPreview,
+  renderSchema,
   renderSource,
   renderStats,
   setBusy,
@@ -13,7 +16,9 @@ import {
   showAlert,
   showWorkspace,
 } from './render';
-import { resetState, state, type SourceKind } from './state';
+import { resetState, state, type Column, type SourceKind } from './state';
+
+const SAMPLE_VALUES = 3;
 
 function kindOf(file: File): SourceKind | undefined {
   const extension = file.name.split('.').pop()?.toLowerCase();
@@ -42,6 +47,16 @@ async function task(label: string, work: (isCurrent: () => boolean) => Promise<v
   }
 }
 
+function sampleValues(index: number) {
+  const values = new Set<string>();
+  for (const row of state.preview) {
+    const value = row[index];
+    if (value !== null && value.trim() !== '') values.add(value);
+    if (values.size === SAMPLE_VALUES) break;
+  }
+  return [...values];
+}
+
 async function loadTable(isCurrent: () => boolean) {
   const { source } = state;
   if (!source) return;
@@ -54,13 +69,21 @@ async function loadTable(isCurrent: () => boolean) {
   setStatus('Reading rows…');
   const table = await ingest(engine);
   const preview = await previewRows(engine, table.columns);
+  setStatus('Detecting column types…');
+  const types = await inferTypes(engine, table.columns);
   if (!isCurrent()) return;
   state.rowCount = table.rowCount;
-  state.columnNames = table.columns;
   state.preview = preview;
+  state.columns = table.columns.map<Column>((name, index) => ({
+    name,
+    inferred: types[index],
+    type: types[index],
+    samples: sampleValues(index),
+  }));
   renderSource(source);
-  renderStats(source, state.rowCount, state.columnNames.length);
-  renderPreview(state.columnNames, state.preview, state.rowCount);
+  renderStats(source, state.rowCount, state.columns.length);
+  renderSchema(state.columns);
+  renderPreview(table.columns, state.preview, state.rowCount);
   showWorkspace(true);
 }
 
@@ -107,6 +130,19 @@ function selectSheet(name: string) {
   if (!state.source || state.source.sheet === name) return;
   state.source.sheet = name;
   return task('Reading sheet…', loadTable);
+}
+
+function changeType(index: number, type: ColumnType) {
+  const column = state.columns[index];
+  if (!column || !COLUMN_TYPES.includes(type)) return;
+  column.type = type;
+  return task('Checking values…', async (isCurrent) => {
+    const engine = await getEngine();
+    const issue = await findIssue(engine, column.name, type);
+    if (!isCurrent()) return;
+    column.issue = issue;
+    renderSchema(state.columns);
+  });
 }
 
 async function loadSample(url: string) {
@@ -167,7 +203,9 @@ export function initConverter() {
   });
 
   root.addEventListener('change', (event) => {
-    const target = event.target as HTMLElement;
-    if (target.matches('[data-sheet-select]')) selectSheet((target as HTMLSelectElement).value);
+    const target = event.target;
+    if (!(target instanceof HTMLSelectElement)) return;
+    if (target.matches('[data-sheet-select]')) selectSheet(target.value);
+    else if (target.dataset.typeSelect) changeType(Number(target.dataset.typeSelect), target.value as ColumnType);
   });
 }

@@ -252,6 +252,12 @@
   .data-table--preview th:first-child {
     z-index: 20;
   }
+  .data-table tr[data-invalid] td {
+    background: color-mix(in srgb, var(--danger) 6%, transparent);
+  }
+  .data-table tr[data-invalid] .select {
+    border-color: var(--danger);
+  }
   .data-table [data-empty] {
     @apply text-muted italic opacity-60;
   }

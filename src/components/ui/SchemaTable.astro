@@ -1,0 +1,21 @@
+---
+import SectionHeading from './SectionHeading.astro';
+---
+
+<section aria-labelledby="schema-title">
+  <SectionHeading id="schema" kicker="/ schema" title="Column types">
+    <span data-schema-summary></span>
+  </SectionHeading>
+  <div class="table-scroll" tabindex="0" role="region" aria-labelledby="schema-title">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th scope="col">Column</th>
+          <th scope="col">Type</th>
+          <th scope="col" class="w-full">Sample values</th>
+        </tr>
+      </thead>
+      <tbody data-schema-body></tbody>
+    </table>
+  </div>
+</section>

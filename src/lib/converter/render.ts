@@ -1,7 +1,8 @@
 import { ConverterError } from '../errors';
 import { formatBytes, formatCount } from '../format';
 import type { PreviewRow } from '../duckdb/preview';
-import type { Source } from './state';
+import { COLUMN_TYPES, TYPE_LABELS } from '../duckdb/sql';
+import type { Column, Source } from './state';
 
 const one = <T extends HTMLElement>(selector: string) => document.querySelector<T>(selector);
 
@@ -127,4 +128,65 @@ export function renderPreview(columns: string[], rows: PreviewRow[], rowCount: n
         ? `First ${formatCount(rows.length)} of ${formatCount(rowCount)} rows, as read from the file.`
         : `All ${formatCount(rowCount)} rows, as read from the file.`;
   }
+}
+
+function issueText(column: Column) {
+  if (!column.issue) return '';
+  const { count, samples } = column.issue;
+  const values = samples.map((sample) => `“${sample}”`).join(', ');
+  const noun = count === 1 ? 'value' : 'values';
+  return `${formatCount(count)} ${noun} cannot be read as ${TYPE_LABELS[column.type].toLowerCase()}: ${values}${count > samples.length ? '…' : ''}`;
+}
+
+function schemaRow(column: Column, index: number) {
+  const row = document.createElement('tr');
+  row.toggleAttribute('data-invalid', Boolean(column.issue));
+
+  const name = document.createElement('td');
+  name.className = 'font-mono text-xs font-medium';
+  name.textContent = column.name;
+
+  const type = document.createElement('td');
+  const select = document.createElement('select');
+  select.className = 'select';
+  select.dataset.typeSelect = String(index);
+  select.dataset.busyLock = '';
+  select.setAttribute('aria-label', `Type of ${column.name}`);
+  COLUMN_TYPES.forEach((option) => {
+    const el = document.createElement('option');
+    el.value = option;
+    el.textContent = option === column.inferred ? `${TYPE_LABELS[option]} (detected)` : TYPE_LABELS[option];
+    el.selected = option === column.type;
+    select.append(el);
+  });
+  type.append(select);
+
+  const detail = document.createElement('td');
+  if (column.issue) {
+    detail.className = 'text-xs text-danger';
+    detail.textContent = issueText(column);
+  } else {
+    detail.className = 'max-w-md truncate font-mono text-xs text-muted';
+    detail.textContent = column.samples.length > 0 ? column.samples.join('  ·  ') : 'no values';
+  }
+
+  row.append(name, type, detail);
+  return row;
+}
+
+export function renderSchema(columns: Column[]) {
+  const body = one('[data-schema-body]');
+  if (!body) return;
+  const focused = document.activeElement instanceof HTMLSelectElement ? document.activeElement.dataset.typeSelect : undefined;
+  body.replaceChildren(...columns.map(schemaRow));
+  if (focused !== undefined) body.querySelector<HTMLElement>(`[data-type-select="${focused}"]`)?.focus();
+
+  const summary = one('[data-schema-summary]');
+  if (!summary) return;
+  const invalid = columns.filter((column) => column.issue).length;
+  summary.textContent =
+    invalid > 0
+      ? `${invalid} ${invalid === 1 ? 'column needs' : 'columns need'} a different type before exporting.`
+      : 'Types were detected from every value in the file. Change any that look wrong.';
+  summary.classList.toggle('text-danger', invalid > 0);
 }
