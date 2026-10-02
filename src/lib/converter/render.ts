@@ -1,5 +1,6 @@
 import { ConverterError } from '../errors';
-import { formatBytes } from '../format';
+import { formatBytes, formatCount } from '../format';
+import type { PreviewRow } from '../duckdb/preview';
 import type { Source } from './state';
 
 const one = <T extends HTMLElement>(selector: string) => document.querySelector<T>(selector);
@@ -65,4 +66,65 @@ export function renderSource(source: Source) {
       return option;
     }),
   );
+}
+
+export function setStat(key: string, value: string, note = '') {
+  const tile = one(`[data-stat="${key}"]`);
+  if (!tile) return;
+  const valueEl = tile.querySelector('[data-stat-value]');
+  const noteEl = tile.querySelector<HTMLElement>('[data-stat-note]');
+  if (valueEl) valueEl.textContent = value;
+  if (noteEl) {
+    noteEl.textContent = note;
+    noteEl.hidden = !note;
+  }
+}
+
+export function renderStats(source: Source, rowCount: number, columnCount: number) {
+  setStat('rows', formatCount(rowCount));
+  setStat('columns', formatCount(columnCount));
+  setStat('original', formatBytes(source.size), source.kind.toUpperCase());
+}
+
+function cell(tag: 'th' | 'td', text: string | null) {
+  const el = document.createElement(tag);
+  if (text === null) {
+    el.textContent = 'empty';
+    el.dataset.empty = '';
+  } else {
+    el.textContent = text;
+    el.title = text;
+  }
+  return el;
+}
+
+export function renderPreview(columns: string[], rows: PreviewRow[], rowCount: number) {
+  const table = one<HTMLTableElement>('[data-preview]');
+  if (!table) return;
+
+  const head = document.createElement('thead');
+  const headRow = head.insertRow();
+  const index = cell('th', '#');
+  index.scope = 'col';
+  headRow.append(index);
+  columns.forEach((name) => {
+    const th = cell('th', name);
+    th.scope = 'col';
+    headRow.append(th);
+  });
+
+  const body = document.createElement('tbody');
+  rows.forEach((values, position) => {
+    const row = body.insertRow();
+    row.append(cell('td', String(position + 1)), ...values.map((value) => cell('td', value)));
+  });
+
+  table.replaceChildren(head, body);
+  const caption = one('[data-preview-caption]');
+  if (caption) {
+    caption.textContent =
+      rowCount > rows.length
+        ? `First ${formatCount(rows.length)} of ${formatCount(rowCount)} rows, as read from the file.`
+        : `All ${formatCount(rowCount)} rows, as read from the file.`;
+  }
 }

@@ -224,6 +224,38 @@
     background: color-mix(in srgb, var(--danger) 7%, transparent);
   }
 
+  .table-scroll {
+    @apply overflow-auto rounded-2xl border border-line;
+  }
+  .data-table {
+    @apply w-full border-separate border-spacing-0 text-left text-sm;
+  }
+  .data-table th {
+    @apply sticky top-0 z-10 border-b border-line bg-surface px-4 py-2.5 font-mono text-xs font-medium whitespace-nowrap text-muted;
+  }
+  .data-table td {
+    @apply border-b border-line px-4 py-2 align-middle;
+  }
+  .data-table tbody tr:last-child td {
+    border-bottom: 0;
+  }
+  .data-table tbody tr:hover td {
+    background: color-mix(in srgb, var(--surface) 55%, transparent);
+  }
+  .data-table--preview td {
+    @apply max-w-72 truncate font-mono text-xs whitespace-nowrap;
+  }
+  .data-table--preview :is(th, td):first-child {
+    @apply sticky left-0 text-right text-muted tabular-nums;
+    background: var(--surface);
+  }
+  .data-table--preview th:first-child {
+    z-index: 20;
+  }
+  .data-table [data-empty] {
+    @apply text-muted italic opacity-60;
+  }
+
   .spinner {
     @apply inline-block size-4 shrink-0 rounded-full border-2 border-line;
     border-top-color: var(--accent);

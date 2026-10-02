@@ -6,3 +6,5 @@ export const SITE = {
   author: 'Nicolás Andrade',
   repo: 'https://github.com/nicolasandradedesarrollosit/csv-xlsx-2-parquet',
 } as const;
+
+export const PREVIEW_ROWS = 50;

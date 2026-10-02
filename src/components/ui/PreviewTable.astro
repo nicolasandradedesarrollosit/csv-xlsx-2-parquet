@@ -1,0 +1,12 @@
+---
+import SectionHeading from './SectionHeading.astro';
+---
+
+<section aria-labelledby="preview-title">
+  <SectionHeading id="preview" kicker="/ preview" title="Preview">
+    <span data-preview-caption></span>
+  </SectionHeading>
+  <div class="table-scroll max-h-[32rem]" tabindex="0" role="region" aria-labelledby="preview-title">
+    <table class="data-table data-table--preview" data-preview></table>
+  </div>
+</section>

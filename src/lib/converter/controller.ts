@@ -1,8 +1,18 @@
 import { ConverterError } from '../errors';
 import { getEngine } from '../duckdb/client';
 import { INPUT_FILE, ingest } from '../duckdb/ingest';
+import { previewRows } from '../duckdb/preview';
 import { closeWorkbook, openWorkbook, sheetToCsv } from '../xlsx/client';
-import { clearAlert, renderSource, setBusy, setStatus, showAlert, showWorkspace } from './render';
+import {
+  clearAlert,
+  renderPreview,
+  renderSource,
+  renderStats,
+  setBusy,
+  setStatus,
+  showAlert,
+  showWorkspace,
+} from './render';
 import { resetState, state, type SourceKind } from './state';
 
 function kindOf(file: File): SourceKind | undefined {
@@ -43,10 +53,14 @@ async function loadTable(isCurrent: () => boolean) {
   }
   setStatus('Reading rows…');
   const table = await ingest(engine);
+  const preview = await previewRows(engine, table.columns);
   if (!isCurrent()) return;
   state.rowCount = table.rowCount;
   state.columnNames = table.columns;
+  state.preview = preview;
   renderSource(source);
+  renderStats(source, state.rowCount, state.columnNames.length);
+  renderPreview(state.columnNames, state.preview, state.rowCount);
   showWorkspace(true);
 }
 
