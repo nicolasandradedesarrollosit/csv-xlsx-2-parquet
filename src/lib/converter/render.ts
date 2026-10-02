@@ -45,6 +45,7 @@ export function clearAlert() {
 export function showWorkspace(visible: boolean) {
   const workspace = one('[data-workspace]');
   if (workspace) workspace.hidden = !visible;
+  one('[data-converter]')?.toggleAttribute('data-loaded', visible);
 }
 
 export function renderSource(source: Source) {

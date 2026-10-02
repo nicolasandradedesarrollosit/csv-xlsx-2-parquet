@@ -181,6 +181,15 @@
       border-color 200ms ease,
       background-color 200ms ease;
   }
+  [data-loaded] .dropzone {
+    @apply py-7;
+  }
+  [data-loaded] .dropzone__icon {
+    display: none;
+  }
+  [data-loaded] .dropzone p:first-of-type {
+    @apply mt-0 text-base;
+  }
   .dropzone[data-dragging] {
     border-color: var(--accent);
     background: color-mix(in srgb, var(--accent) 8%, transparent);
