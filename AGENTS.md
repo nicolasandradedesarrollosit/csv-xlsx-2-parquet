@@ -23,7 +23,8 @@ See `README.md` for an overview and `docs/ARCHITECTURE.md` for how the pieces fi
 
 ### Content and SEO
 
-- Site name, titles, description and keywords → `src/config/site.ts`. How-it-works steps → `src/data/steps.ts`.
+- Site name, keywords and the pages (`PAGES`: path, label, title, description) → `src/config/site.ts`. How-it-works steps → `src/data/steps.ts`. Hero and guide copy of each page → `src/data/guides.ts`.
+- A new landing page is a key in `PAGES`, an entry in `GUIDES` and a route file that renders `ConverterPage`. Its copy must be its own and describe only what the converter does.
 - Never add structured data for content that is not visible on the page.
 - Absolute URLs go through `absUrl()` in `src/lib/seo.ts`.
 

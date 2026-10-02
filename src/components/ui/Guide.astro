@@ -1,0 +1,34 @@
+---
+import SectionHeading from './SectionHeading.astro';
+import { PAGES, type PageKey } from '../../config/site';
+import { GUIDES } from '../../data/guides';
+import { withBase } from '../../lib/paths';
+
+interface Props {
+  page: PageKey;
+}
+
+const { page } = Astro.props;
+const guide = GUIDES[page];
+const others = (Object.keys(PAGES) as PageKey[]).filter((key) => key !== page);
+---
+
+<section class="wrap section" aria-labelledby="guide-title">
+  <SectionHeading id="guide" kicker={guide.kicker} title={guide.title}>
+    {guide.intro}
+  </SectionHeading>
+  <div class="grid gap-4 md:grid-cols-2">
+    {
+      guide.blocks.map((block) => (
+        <article class="card">
+          <h3 class="text-lg font-semibold">{block.title}</h3>
+          <p class="mt-2 text-sm text-muted">{block.body}</p>
+        </article>
+      ))
+    }
+  </div>
+  <nav class="mt-6 flex flex-wrap items-center gap-x-6 gap-y-2" aria-label="Other converters">
+    <span class="label">See also</span>
+    {others.map((key) => <a class="link" href={withBase(PAGES[key].path)}>{PAGES[key].label}</a>)}
+  </nav>
+</section>

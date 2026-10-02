@@ -141,11 +141,19 @@ directly.
 
 ## SEO
 
+The site has one page per search intent: the home page, `/csv-to-parquet/` and
+`/xlsx-to-parquet/`. `PAGES` in `config/site.ts` holds the path, link label, title and description
+of each one, and `GUIDES` in `data/guides.ts` its hero text and guide blocks. The route files are
+one line each: they render `components/pages/ConverterPage.astro` with a page key, so every page
+carries the same converter and differs only in copy. `components/ui/Guide.astro` renders the
+guide blocks and links to the other pages; the footer links to all of them.
+
 `components/seo/SEO.astro` emits the title, description, canonical URL, `robots`, Open Graph and
 Twitter tags, plus the Google verification tag when `SITE.googleSiteVerification` is set.
 `lib/seo.ts` builds absolute URLs (`absUrl()`, which honours the base path) and the
-`WebApplication` JSON-LD object.
-`@astrojs/sitemap` writes the sitemap and `pages/robots.txt.ts` points to it. The 404 page is
+`WebApplication` JSON-LD object of a page, with that page's URL and description.
+`@astrojs/sitemap` writes the sitemap, stamping every URL with the build time as `lastmod`, and
+`pages/robots.txt.ts` points to it. The 404 page is
 `noindex` and left out of the sitemap.
 
 ## Build and deploy

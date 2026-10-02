@@ -4,6 +4,8 @@ A static web app that converts CSV and Excel files to [Parquet](https://parquet.
 Drop a file, check the preview, fix the column types and download the result. There is no
 backend: the conversion runs in your browser with DuckDB-WASM.
 
+**Try it: <https://nicolasandradedesarrollosit.github.io/csv-xlsx-2-parquet/>**
+
 ![A CSV row is dropped, becomes a typed table and is written as a Parquet file](docs/demo.gif)
 
 The same clip in 1080p: [docs/demo.mp4](docs/demo.mp4).
@@ -80,15 +82,20 @@ SITE_URL=https://<user>.github.io BASE_PATH=/<repository> npm run preview
 
 ## SEO
 
-The page is static HTML, so its content is indexable without running JavaScript. It ships with:
+The site has three pages, each with the full converter and its own copy: the home page,
+`/csv-to-parquet/` and `/xlsx-to-parquet/`. They are static HTML, so their content is indexable
+without running JavaScript, and they link to each other from the guide section and the footer.
+Each page ships with:
 
-- a descriptive title, meta description, canonical URL and `robots` meta tag;
+- its own title, meta description, canonical URL and `robots` meta tag;
 - Open Graph and Twitter tags with a 1200×630 preview image (`public/og-default.png`);
-- JSON-LD structured data (`WebApplication`);
-- `sitemap-index.xml` (`@astrojs/sitemap`) and `robots.txt`, both using the deployed URL.
+- JSON-LD structured data (`WebApplication`) pointing at that page.
 
-Titles, description and keywords live in `src/config/site.ts`; the how-it-works steps in
-`src/data/steps.ts`.
+`sitemap-index.xml` (`@astrojs/sitemap`, with `lastmod` set to the build time) and `robots.txt`
+both use the deployed URL.
+
+Page paths, titles and descriptions live in `PAGES` in `src/config/site.ts`; the hero and guide
+copy of each page in `src/data/guides.ts`; the how-it-works steps in `src/data/steps.ts`.
 
 To get the site into Google:
 
@@ -96,7 +103,7 @@ To get the site into Google:
 2. Choose the HTML tag verification method and paste the token into `googleSiteVerification`
    in `src/config/site.ts`, then deploy.
 3. Submit `https://<user>.github.io/<repository>/sitemap-index.xml` under **Sitemaps** and
-   request indexing of the home page with **URL inspection**.
+   request indexing of each page with **URL inspection**.
 
 On a GitHub Pages project site, `robots.txt` is served under `/<repository>/`, where crawlers
 do not look for it; only a `robots.txt` at the root of the domain counts. That is harmless here
@@ -109,14 +116,15 @@ domain, or a `<user>.github.io` repository, it is picked up automatically.
 public/samples/         Sample CSV and XLSX files
 scripts/make-samples.mjs  Generates the samples
 src/
-  config/site.ts        Name, titles, description, keywords, repository, preview size
-  data/steps.ts         The how-it-works steps shown on the page
+  config/site.ts        Name, pages (path, title, description), keywords, repository, preview size
+  data/steps.ts         The how-it-works steps shown on every page
+  data/guides.ts        Hero and guide copy of each page
   layouts/BaseLayout.astro
   components/
     layout/             Header, footer, theme toggle
     pages/              One component per page; route files render these
     seo/                Meta tags and JSON-LD
-    ui/                 Dropzone, file bar, stats, schema and preview tables, alert
+    ui/                 Dropzone, file bar, stats, schema and preview tables, alert, guide
   lib/
     client.ts           Single client entry point
     seo.ts              Absolute URLs and JSON-LD builders

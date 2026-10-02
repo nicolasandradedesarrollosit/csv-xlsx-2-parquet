@@ -1,17 +1,17 @@
-import { SITE } from '../config/site';
+import { PAGES, SITE, type PageKey } from '../config/site';
 import { withBase } from './paths';
 
 export function absUrl(path: string, site: URL | undefined) {
   return new URL(withBase(path), site).href;
 }
 
-export function webApplication(site: URL | undefined) {
+export function webApplication(site: URL | undefined, page: PageKey) {
   return {
     '@context': 'https://schema.org',
     '@type': 'WebApplication',
     name: SITE.name,
-    url: absUrl('/', site),
-    description: SITE.description,
+    url: absUrl(PAGES[page].path, site),
+    description: PAGES[page].description,
     applicationCategory: 'UtilitiesApplication',
     operatingSystem: 'Any',
     browserRequirements: 'Requires JavaScript and WebAssembly.',

@@ -1,9 +1,18 @@
+---
+interface Props {
+  kicker: string;
+  title: string;
+  lead: string;
+}
+const { kicker, title, lead } = Astro.props;
+---
+
 <section class="wrap pt-12 sm:pt-16" aria-labelledby="hero-title">
-  <p class="kicker">/ csv · xlsx → parquet</p>
+  <p class="kicker">{kicker}</p>
   <h1 id="hero-title" class="mt-4 max-w-3xl text-display leading-[1.02] font-semibold tracking-tighter">
-    Convert CSV and XLSX to Parquet, without leaving your browser.
+    {title}
   </h1>
   <p class="mt-5 max-w-2xl text-lg text-muted">
-    Drop a file, fix the column types and download a Parquet file. Nothing is uploaded.
+    {lead}
   </p>
 </section>

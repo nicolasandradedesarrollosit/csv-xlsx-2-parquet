@@ -32,7 +32,7 @@ export default defineConfig({
     },
   ],
 
-  integrations: [sitemap({ filter: (page) => !page.includes('/404') })],
+  integrations: [sitemap({ filter: (page) => !page.includes('/404'), lastmod: new Date() })],
 
   build: { inlineStylesheets: 'always' },
 

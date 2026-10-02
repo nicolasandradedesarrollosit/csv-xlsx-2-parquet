@@ -10,15 +10,21 @@ import PreviewTable from '../ui/PreviewTable.astro';
 import SchemaTable from '../ui/SchemaTable.astro';
 import Stats from '../ui/Stats.astro';
 import Status from '../ui/Status.astro';
-import { SITE } from '../../config/site';
+import Guide from '../ui/Guide.astro';
+import { PAGES, type PageKey } from '../../config/site';
+import { GUIDES } from '../../data/guides';
 import { webApplication } from '../../lib/seo';
+
+interface Props {
+  page: PageKey;
+}
+
+const { page } = Astro.props;
+const { title, description } = PAGES[page];
 ---
 
-<BaseLayout
-  seo={{ title: SITE.title, description: SITE.description }}
-  jsonLd={[webApplication(Astro.site)]}
->
-  <Hero />
+<BaseLayout seo={{ title, description }} jsonLd={[webApplication(Astro.site, page)]}>
+  <Hero {...GUIDES[page].hero} />
   <section class="wrap mt-10" aria-label="Converter" data-converter>
     <Dropzone />
     <Status />
@@ -34,4 +40,5 @@ import { webApplication } from '../../lib/seo';
     </div>
   </section>
   <HowItWorks />
+  <Guide page={page} />
 </BaseLayout>

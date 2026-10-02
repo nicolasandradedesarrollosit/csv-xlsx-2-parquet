@@ -1,5 +1,6 @@
 ---
-import { SITE } from '../../config/site';
+import { PAGES, SITE } from '../../config/site';
+import { withBase } from '../../lib/paths';
 
 const year = new Date().getFullYear();
 ---
@@ -7,6 +8,9 @@ const year = new Date().getFullYear();
 <footer class="section border-t border-line">
   <div class="wrap flex flex-wrap items-center justify-between gap-x-6 gap-y-3 py-6 text-xs text-muted">
     <p class="font-mono">© {year} {SITE.author}</p>
+    <nav class="flex flex-wrap gap-x-5 gap-y-2" aria-label="Converters">
+      {Object.values(PAGES).map((page) => <a class="no-underline hover:text-fg" href={withBase(page.path)}>{page.label}</a>)}
+    </nav>
     <a class="no-underline hover:text-fg" href={SITE.repo} target="_blank" rel="noopener noreferrer">Source code</a>
   </div>
 </footer>
