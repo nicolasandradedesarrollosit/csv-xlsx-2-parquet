@@ -158,3 +158,7 @@ conventions to follow when changing code are in [AGENTS.md](AGENTS.md).
   dates are not detected.
 - A value like `1,234` is read as a comma decimal (1.234), not as one thousand two hundred thirty-four.
 - Integers are 64-bit and decimals are doubles; there is no fixed-precision decimal type.
+
+## License
+
+[MIT](LICENSE) © Nicolás Andrade
