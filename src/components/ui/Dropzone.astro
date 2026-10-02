@@ -1,0 +1,20 @@
+---
+import Icon from './Icon.astro';
+---
+
+<div class="dropzone" data-dropzone>
+  <span class="dropzone__icon"><Icon name="upload" class="size-5" /></span>
+  <p class="mt-4 text-lg font-medium">Drop a CSV or XLSX file here</p>
+  <p class="mt-1 text-sm text-muted">It stays on your device. Files of several MB are fine.</p>
+  <label class="btn mt-6">
+    <Icon name="file" />
+    Choose a file
+    <input
+      type="file"
+      class="sr-only"
+      accept=".csv,.tsv,.txt,.xlsx,text/csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+      data-file-input
+      data-busy-lock
+    />
+  </label>
+</div>

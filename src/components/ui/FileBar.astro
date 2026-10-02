@@ -1,0 +1,25 @@
+---
+import Icon from './Icon.astro';
+---
+
+<div class="flex flex-wrap items-center gap-x-6 gap-y-4">
+  <div class="flex min-w-0 flex-1 items-center gap-3">
+    <span class="grid size-10 shrink-0 place-items-center rounded-xl border border-line text-muted">
+      <Icon name="file" class="size-5" />
+    </span>
+    <div class="min-w-0">
+      <p class="truncate font-medium" data-file-name></p>
+      <p class="font-mono text-xs text-muted" data-file-meta></p>
+    </div>
+  </div>
+
+  <label class="flex items-center gap-2 text-sm text-muted" data-sheet-picker hidden>
+    Sheet
+    <select class="select" data-sheet-select data-busy-lock></select>
+  </label>
+
+  <button type="button" class="btn btn--ghost py-2" data-reset>
+    <Icon name="x" />
+    Remove
+  </button>
+</div>

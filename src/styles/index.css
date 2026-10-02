@@ -173,4 +173,66 @@
     @apply relative rounded-2xl border border-line p-6;
     background: color-mix(in srgb, var(--surface) 45%, transparent);
   }
+
+  .dropzone {
+    @apply flex flex-col items-center rounded-2xl border border-dashed border-line px-6 py-12 text-center;
+    background: color-mix(in srgb, var(--surface) 45%, transparent);
+    transition:
+      border-color 200ms ease,
+      background-color 200ms ease;
+  }
+  .dropzone[data-dragging] {
+    border-color: var(--accent);
+    background: color-mix(in srgb, var(--accent) 8%, transparent);
+  }
+  .dropzone__icon {
+    @apply grid size-12 place-items-center rounded-full border border-line bg-bg text-muted;
+    transition:
+      color 200ms ease,
+      transform 200ms var(--ease-out);
+  }
+  .dropzone[data-dragging] .dropzone__icon {
+    color: var(--accent);
+    transform: translateY(-3px);
+  }
+  .dropzone .btn:focus-within {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+  [data-busy] .dropzone .btn {
+    @apply pointer-events-none opacity-50;
+  }
+
+  .select {
+    @apply cursor-pointer rounded-lg border border-line bg-bg py-1.5 pr-8 pl-3 text-sm text-fg hover:border-fg;
+    appearance: none;
+    background-image: linear-gradient(45deg, transparent 50%, var(--muted) 50%),
+      linear-gradient(135deg, var(--muted) 50%, transparent 50%);
+    background-position:
+      calc(100% - 1rem) 50%,
+      calc(100% - 0.7rem) 50%;
+    background-size: 0.3rem 0.3rem;
+    background-repeat: no-repeat;
+  }
+  .select:disabled {
+    @apply cursor-not-allowed opacity-50;
+  }
+
+  .alert {
+    @apply flex items-start gap-3 rounded-2xl border px-5 py-4 text-sm text-danger;
+    border-color: color-mix(in srgb, var(--danger) 40%, var(--line));
+    background: color-mix(in srgb, var(--danger) 7%, transparent);
+  }
+
+  .spinner {
+    @apply inline-block size-4 shrink-0 rounded-full border-2 border-line;
+    border-top-color: var(--accent);
+    animation: spin 700ms linear infinite;
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
 }

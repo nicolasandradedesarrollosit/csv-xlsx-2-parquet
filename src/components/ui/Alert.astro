@@ -1,0 +1,14 @@
+---
+import Icon from './Icon.astro';
+---
+
+<div class="alert mt-4" role="alert" data-alert hidden>
+  <Icon name="alert" class="mt-0.5 size-5 shrink-0" />
+  <div class="min-w-0 flex-1">
+    <p class="font-medium" data-alert-title></p>
+    <p class="mt-1 font-mono text-xs break-words whitespace-pre-wrap opacity-80" data-alert-detail hidden></p>
+  </div>
+  <button type="button" class="icon-btn -mt-1.5 -mr-2 shrink-0 text-current" data-alert-close aria-label="Dismiss">
+    <Icon name="x" />
+  </button>
+</div>

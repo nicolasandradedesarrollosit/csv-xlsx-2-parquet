@@ -1,3 +1,5 @@
+import { initConverter } from './converter/controller';
+
 const root = document.documentElement;
 
 function toggleTheme() {
@@ -14,3 +16,5 @@ document.addEventListener('click', (event) => {
   const target = event.target as HTMLElement;
   if (target.closest('[data-theme-toggle]')) toggleTheme();
 });
+
+initConverter();
