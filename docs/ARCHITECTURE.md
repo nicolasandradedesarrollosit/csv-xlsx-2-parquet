@@ -64,7 +64,7 @@ The bundle files are imported with Vite's `?url` suffix, so they are emitted as 
 `_astro/` and resolved correctly under any base path. The package is excluded from
 `optimizeDeps`, since pre-bundling would break those asset references in development. The
 single-threaded bundles are used, so the site needs no cross-origin isolation headers, which
-a plain static host does not need to set.
+GitHub Pages cannot set.
 
 The engine is warmed up when the pointer enters the dropzone, so it is usually ready by the time
 a file is dropped.
@@ -142,9 +142,7 @@ Twitter tags, plus the Google verification tag when `SITE.googleSiteVerification
 
 ## Build and deploy
 
-`npm run build` writes static HTML to `dist/`, which Vercel serves as is; there is no adapter and
-no server code. `astro.config.mjs` takes the site URL from `SITE_URL`, else from Vercel's
-`VERCEL_PROJECT_PRODUCTION_URL`, else `localhost` for development. `BASE_PATH` is optional and only
-needed when the site is served under a sub-path; every internal URL goes through `withBase()`
-(`src/lib/paths.ts`), so both cases work. `vercel.json` sets immutable caching for `_astro/` and
-basic security headers.
+`npm run build` writes static HTML to `dist/`. `astro.config.mjs` reads `SITE_URL` and `BASE_PATH`
+from the environment, and every internal URL goes through `withBase()` (`src/lib/paths.ts`), so
+the same build works at a domain root or under `/<repository>/`. The GitHub Actions workflow feeds
+both values from `actions/configure-pages`.

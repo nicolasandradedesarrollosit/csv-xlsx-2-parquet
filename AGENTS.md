@@ -51,8 +51,8 @@ See `README.md` for an overview and `docs/ARCHITECTURE.md` for how the pieces fi
 
 - Tailwind CSS v4: tokens, light/dark colours and shared classes in `src/styles/index.css`; utilities for one-off layout.
 - Always use the colour tokens (`bg-bg`, `text-muted`, `border-line`…), never raw colours.
-- Internal URLs go through `withBase()` so the site also works when served under a sub-path.
+- Internal URLs go through `withBase()` so the site works under a GitHub Pages project path.
 
 ### Deploy
 
-- Vercel builds and deploys every push to `main` as a static site; there is no adapter and no CI workflow in the repository.
+- `.github/workflows/deploy.yml` type-checks, builds and publishes to GitHub Pages on every push to `main`.
