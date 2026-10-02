@@ -2,6 +2,7 @@
 import { env } from 'node:process';
 import { defineConfig, fontProviders } from 'astro/config';
 
+import sitemap from '@astrojs/sitemap';
 import tailwindcss from '@tailwindcss/vite';
 
 export default defineConfig({
@@ -30,6 +31,8 @@ export default defineConfig({
       fallbacks: ['ui-monospace', 'monospace'],
     },
   ],
+
+  integrations: [sitemap({ filter: (page) => !page.includes('/404') })],
 
   build: { inlineStylesheets: 'always' },
 

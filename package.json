@@ -18,6 +18,7 @@
     "esbuild": true
   },
   "dependencies": {
+    "@astrojs/sitemap": "^3.7.4",
     "@duckdb/duckdb-wasm": "^1.33.1-dev57.0",
     "@tailwindcss/vite": "^4.3.3",
     "astro": "^7.3.5",

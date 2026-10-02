@@ -80,21 +80,48 @@ SITE_URL=https://<user>.github.io BASE_PATH=/<repository> npm run build
 SITE_URL=https://<user>.github.io BASE_PATH=/<repository> npm run preview
 ```
 
+## SEO
+
+The page is static HTML, so its content is indexable without running JavaScript. It ships with:
+
+- a descriptive title, meta description, canonical URL and `robots` meta tag;
+- Open Graph and Twitter tags with a 1200×630 preview image (`public/og-default.png`);
+- JSON-LD structured data: `WebApplication` and `FAQPage`, built from the visible FAQ;
+- `sitemap-index.xml` (`@astrojs/sitemap`) and `robots.txt`, both using the deployed URL.
+
+Titles, description and keywords live in `src/config/site.ts`; the steps and the FAQ in
+`src/data/faq.ts`.
+
+To get the site into Google:
+
+1. Add the site as a URL-prefix property in [Google Search Console](https://search.google.com/search-console).
+2. Choose the HTML tag verification method and paste the token into `googleSiteVerification`
+   in `src/config/site.ts`, then deploy.
+3. Submit `https://<user>.github.io/<repository>/sitemap-index.xml` under **Sitemaps** and
+   request indexing of the home page with **URL inspection**.
+
+On a GitHub Pages project site, `robots.txt` is served under `/<repository>/`, where crawlers
+do not look for it; only a `robots.txt` at the root of the domain counts. That is harmless here
+(everything is allowed), but it means the sitemap has to be submitted by hand. With a custom
+domain, or a `<user>.github.io` repository, it is picked up automatically.
+
 ## Project structure
 
 ```
 public/samples/         Sample CSV and XLSX files
 scripts/make-samples.mjs  Generates the samples
 src/
-  config/site.ts        Name, description, repository, preview size
+  config/site.ts        Name, titles, description, keywords, repository, preview size
+  data/faq.ts           Steps and FAQ shown on the page and in the structured data
   layouts/BaseLayout.astro
   components/
     layout/             Header, footer, theme toggle
     pages/              One component per page; route files render these
-    seo/                Meta tags
-    ui/                 Dropzone, file bar, stats, schema and preview tables, alert
+    seo/                Meta tags and JSON-LD
+    ui/                 Dropzone, file bar, stats, schema and preview tables, alert, FAQ
   lib/
     client.ts           Single client entry point
+    seo.ts              Absolute URLs and JSON-LD builders
     converter/          State, DOM rendering and the controller that wires them
     duckdb/             Lazy engine, ingest, type inference, SQL helpers, export
     xlsx/               SheetJS worker and its promise-based client

@@ -1,0 +1,22 @@
+---
+import SectionHeading from './SectionHeading.astro';
+import { FAQ } from '../../data/faq';
+---
+
+<section class="wrap section" aria-labelledby="faq-title">
+  <SectionHeading id="faq" kicker="/ faq" title="Frequently asked questions">
+    About converting CSV and XLSX files to Parquet with this tool.
+  </SectionHeading>
+  <div class="faq">
+    {
+      FAQ.map((item) => (
+        <details>
+          <summary>
+            <h3>{item.question}</h3>
+          </summary>
+          <p>{item.answer}</p>
+        </details>
+      ))
+    }
+  </div>
+</section>

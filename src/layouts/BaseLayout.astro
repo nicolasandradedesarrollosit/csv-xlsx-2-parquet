@@ -2,6 +2,7 @@
 import { Font } from 'astro:assets';
 import '../styles/index.css';
 
+import JsonLd from '../components/seo/JsonLd.astro';
 import SEO, { type SeoProps } from '../components/seo/SEO.astro';
 import Header from '../components/layout/Header.astro';
 import Footer from '../components/layout/Footer.astro';
@@ -9,9 +10,10 @@ import { withBase } from '../lib/paths';
 
 interface Props {
   seo: SeoProps;
+  jsonLd?: Record<string, unknown>[];
 }
 
-const { seo } = Astro.props;
+const { seo, jsonLd = [] } = Astro.props;
 ---
 
 <!doctype html>
@@ -35,6 +37,7 @@ const { seo } = Astro.props;
     <Font cssVariable="--font-geist-mono" />
     <SEO {...seo} />
     <link rel="icon" href={withBase('favicon.svg')} type="image/svg+xml" />
+    {jsonLd.map((data) => <JsonLd data={data} />)}
     <meta name="theme-color" content="#fafaf9" media="(prefers-color-scheme: light)" />
     <meta name="theme-color" content="#0c0c0e" media="(prefers-color-scheme: dark)" />
   </head>

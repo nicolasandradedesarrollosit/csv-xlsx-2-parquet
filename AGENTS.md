@@ -21,6 +21,12 @@ See `README.md` for an overview and `docs/ARCHITECTURE.md` for how the pieces fi
 - `npm run check` is the lint step. Run it and `npm run build` before committing.
 - Commits follow Conventional Commits with a lowercase imperative subject and an optional scope (`feat(export): …`).
 
+### Content and SEO
+
+- Site name, titles, description and keywords → `src/config/site.ts`. Steps and FAQ → `src/data/faq.ts`.
+- The FAQ feeds both the page and the `FAQPage` JSON-LD: never add structured data for content that is not visible.
+- Absolute URLs go through `absUrl()` in `src/lib/seo.ts`.
+
 ### Privacy
 
 - File contents never leave the page. Do not add analytics, remote fonts, CDN scripts or any request that carries user data.
