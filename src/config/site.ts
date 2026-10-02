@@ -15,7 +15,7 @@ export const SITE = {
   authorUrl: 'https://github.com/nicolasandradedesarrollosit',
   repo: 'https://github.com/nicolasandradedesarrollosit/csv-xlsx-2-parquet',
   ogImage: { path: 'og-default.png', width: 1200, height: 630, alt: 'csv-xlsx-2-parquet: convert CSV and XLSX to Parquet in your browser' },
-  googleSiteVerification: '',
+  googleSiteVerification: 'AyHnvdJBgHN2EIzZwG_Z-zBOSK9FWGaUFo_kDyziq0U',
 } as const;
 
 export const PREVIEW_ROWS = 50;
