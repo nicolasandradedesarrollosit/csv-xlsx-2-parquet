@@ -1,4 +1,4 @@
-# Parquetify — CSV and XLSX to Parquet, in the browser
+# csv-xlsx-2-parquet — CSV and XLSX to Parquet, in the browser
 
 A static web app that converts CSV and Excel files to [Parquet](https://parquet.apache.org).
 Drop a file, check the preview, fix the column types and download the result. There is no
