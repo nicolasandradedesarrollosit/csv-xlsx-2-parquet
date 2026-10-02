@@ -1,13 +1,17 @@
 import { ConverterError } from '../errors';
 import { getEngine } from '../duckdb/client';
+import { exportParquet, failingColumns } from '../duckdb/export';
 import { findIssue, inferTypes } from '../duckdb/infer';
 import { INPUT_FILE, ingest } from '../duckdb/ingest';
 import { previewRows } from '../duckdb/preview';
 import { COLUMN_TYPES, type ColumnType } from '../duckdb/sql';
 import { closeWorkbook, openWorkbook, sheetToCsv } from '../xlsx/client';
+import { parquetName, saveFile } from './download';
 import {
   clearAlert,
+  clearResult,
   renderPreview,
+  renderResult,
   renderSchema,
   renderSource,
   renderStats,
@@ -136,12 +140,38 @@ function changeType(index: number, type: ColumnType) {
   const column = state.columns[index];
   if (!column || !COLUMN_TYPES.includes(type)) return;
   column.type = type;
+  clearResult();
   return task('Checking values…', async (isCurrent) => {
     const engine = await getEngine();
     const issue = await findIssue(engine, column.name, type);
     if (!isCurrent()) return;
     column.issue = issue;
     renderSchema(state.columns);
+  });
+}
+
+function download() {
+  const { source, columns } = state;
+  if (!source || columns.length === 0) return;
+  return task('Writing the Parquet file…', async (isCurrent) => {
+    const engine = await getEngine();
+    const failing = await failingColumns(engine, columns);
+    if (failing.length > 0) {
+      for (const index of failing) {
+        columns[index].issue = await findIssue(engine, columns[index].name, columns[index].type);
+      }
+      if (isCurrent()) renderSchema(columns);
+      const names = failing.map((index) => columns[index].name).join(', ');
+      throw new ConverterError(
+        'Some values do not fit the chosen type.',
+        `Change the type of ${names} or fix those values in the source file. Nothing was exported.`,
+      );
+    }
+    const file = await exportParquet(engine, columns);
+    if (!isCurrent()) return;
+    const name = parquetName(source.name, source.sheets.length > 1 ? source.sheet : undefined);
+    saveFile(file.bytes, name);
+    renderResult(name, source.size, file.bytes.byteLength, file.rowCount);
   });
 }
 
@@ -199,6 +229,7 @@ export function initConverter() {
     const sample = target.closest<HTMLElement>('[data-sample]');
     if (sample?.dataset.sample && !state.busy) loadSample(sample.dataset.sample);
     else if (target.closest('[data-reset]')) reset();
+    else if (target.closest('[data-download]') && !state.busy) download();
     else if (target.closest('[data-alert-close]')) clearAlert();
   });
 

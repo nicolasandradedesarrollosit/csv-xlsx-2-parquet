@@ -1,0 +1,15 @@
+---
+import Icon from './Icon.astro';
+---
+
+<div class="card flex flex-wrap items-center justify-between gap-x-6 gap-y-4">
+  <div class="min-w-0">
+    <p class="font-medium">Ready to export</p>
+    <p class="mt-1 text-sm text-muted">Parquet with ZSTD compression and the column types chosen above.</p>
+    <p class="mt-2 text-sm text-ok" role="status" data-result hidden></p>
+  </div>
+  <button type="button" class="btn" data-download data-busy-lock>
+    <Icon name="download" />
+    Download Parquet
+  </button>
+</div>

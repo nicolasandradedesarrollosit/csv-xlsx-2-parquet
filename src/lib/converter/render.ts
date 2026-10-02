@@ -1,5 +1,5 @@
 import { ConverterError } from '../errors';
-import { formatBytes, formatCount } from '../format';
+import { formatBytes, formatCount, formatRatio } from '../format';
 import type { PreviewRow } from '../duckdb/preview';
 import { COLUMN_TYPES, TYPE_LABELS } from '../duckdb/sql';
 import type { Column, Source } from './state';
@@ -85,6 +85,21 @@ export function renderStats(source: Source, rowCount: number, columnCount: numbe
   setStat('rows', formatCount(rowCount));
   setStat('columns', formatCount(columnCount));
   setStat('original', formatBytes(source.size), source.kind.toUpperCase());
+  clearResult();
+}
+
+export function clearResult() {
+  setStat('parquet', '—');
+  const result = one('[data-result]');
+  if (result) result.hidden = true;
+}
+
+export function renderResult(name: string, originalSize: number, parquetSize: number, rowCount: number) {
+  setStat('parquet', formatBytes(parquetSize), formatRatio(originalSize, parquetSize));
+  const result = one('[data-result]');
+  if (!result) return;
+  result.textContent = `Saved ${name}: ${formatCount(rowCount)} rows, ${formatBytes(parquetSize)} (was ${formatBytes(originalSize)}).`;
+  result.hidden = false;
 }
 
 function cell(tag: 'th' | 'td', text: string | null) {
