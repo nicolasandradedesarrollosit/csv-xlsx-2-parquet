@@ -4,11 +4,7 @@ A static web app that converts CSV and Excel files to [Parquet](https://parquet.
 Drop a file, check the preview, fix the column types and download the result. There is no
 backend: the conversion runs in your browser with DuckDB-WASM.
 
-<!-- DEMO GIF: record the flow (drop a file → review types → download) and save it as docs/demo.gif -->
-
-![Demo](docs/demo.gif)
-
-<!-- /DEMO GIF -->
+![A CSV row is dropped, becomes a typed table and is written as a Parquet file](docs/demo.gif)
 
 ## Features
 
